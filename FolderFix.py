@@ -36,7 +36,7 @@ observer.schedule(event_handler, folder_tracked, recursive=True)
 observer.start()
 try:
     while True:
-        time.sleep(2)
+        time.sleep(20)
 except KeyboardInterrupt:
     observer.stop()
 observer.join()
