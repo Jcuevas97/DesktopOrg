@@ -6,16 +6,16 @@ import time
 
 class MyHandler(FileSystemEventHandler):
     def on_any_event(self, event):
-        for filename in os.listdir(folder_tracked):
-            src = folder_tracked + "\\" + filename
-            if filename.endswith(".exe"):
-                new_destination = folder_tracked + "\\Programs\\" + filename
+        for filename in os.listdir(downloads):
+            src = downloads + "\\" + filename
+            if filename.endswith(tuple([".exe", ".msi"])):
+                new_destination = downloads + "\\Programs\\" + filename
             elif filename.endswith(".rmskin"):
-                new_destination = folder_tracked + "\\Rainmeter Skins\\" + filename
+                new_destination = downloads + "\\Rainmeter Skins\\" + filename
             elif filename.endswith(tuple([".pdf", ".doc", ".docx", ".txt"])):
-                new_destination = folder_tracked + "\\Documents\\" + filename
+                new_destination = downloads + "\\Documents\\" + filename
             elif filename.endswith(tuple([".mp4", ".wav", ".flac", ".mp3"])):
-                new_destination = folder_tracked + "\\Music\\" + filename
+                new_destination = downloads + "\\Music\\" + filename
             else:
                 continue
             try:
@@ -29,15 +29,19 @@ def file_mover(src, destination):
     os.rename(src, destination)
 
 
-folder_tracked = "F:\\Downloads"
+downloads = "F:\\Downloads"
+desktop = "C:\\Users\\%username%\\OneDrive\\Desktop"
 event_handler = MyHandler()
-observer = Observer()
-observer.schedule(event_handler, folder_tracked, recursive=True)
-observer.start()
+observerDownloads = Observer()
+observerDownloads.schedule(event_handler, downloads, recursive=True)
+
+
+observerDownloads.start()
+
 try:
     while True:
         time.sleep(20)
 except KeyboardInterrupt:
-    observer.stop()
-observer.join()
+    observerDownloads.stop()
+observerDownloads.join()
 
